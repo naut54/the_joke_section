@@ -18,23 +18,29 @@ public class Main {
     private static final String STMT = "@@@@@@@@@";
 
     private static final int ROOF = 1_000;
-    private static final int N_THREADS = 10;
+    protected static final int N_THREADS = 10;
 
     public static void main(String[] args) {
-        String[] ouput = {"Archivos de pograma", "PerfoLogs", "Ususarios", "Wildows", "xampp"};
+        String[] output = {"Archivos de pograma", "PerfoLogs", "Ususarios", "Wildows"};
         String[] files = {"explorerCookies", "notepad", "winglogon", "Sistem32", "nsconfig", "rgedit", "kernel31", "user22", "ntoskinit", "winkrnl"};
-        String op = ouput[(int)(Math.random() * ouput.length)];
         //JOptionPane.showMessageDialog(null, "File joke.jar not found \nTry again", "Error", JOptionPane.ERROR_MESSAGE);
         long startTime = System.nanoTime();
-        for (int i = 0; i <= 1; i++) {
-            optimizedFileWriter(op, files);
+        for (int i = 0; i <= 2; i++) {
+            int opN = (int)(Math.random() * output.length);
+            String op = output[opN];
+            System.out.println(output[opN]);
+            fileWriter(op, files);
         }
 
         long endTime = System.nanoTime() - startTime;
         System.out.printf("Tiempo de ejecución: %.2f segundos%n", endTime / 1_000_000_000.0);
     }
 
-    public static void optimizedFileWriter(String op, String[] files) {
+    public int obtainOutputNumber(String[] output) {
+        return (int)(Math.random() * output.length);
+    }
+
+    public static void fileWriter(String op, String[] files) {
         ExecutorService executor = Executors.newFixedThreadPool(N_THREADS);
 
         Path outputDir = Paths.get("C:\\" + op);
@@ -62,7 +68,7 @@ public class Main {
             final int threadId = n;
             executor.submit(() -> {
                 try (BufferedWriter writer = new BufferedWriter(
-                        new FileWriter(outputDir.resolve("file_" + threadId + ".txt").toString()),
+                        new FileWriter(outputDir.resolve(fl + ".txt").toString()),
                         BUFFER_SIZE)) {
 
                     int remainingItems = ROOF;
